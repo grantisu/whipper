@@ -134,11 +134,18 @@ class _CD(BaseCommand):
                             "--cdr not passed")
             return -1
 
+        out_bpath = self.options.output_directory.decode('utf-8')
+        # Needed to preserve cdrdao's tocfile
+        out_fpath = self.program.getPath(out_bpath,
+                                         self.options.disc_template,
+                                         self.mbdiscid,
+                                         self.program.metadata)
         # now, read the complete index table, which is slower
         self.itable = self.program.getTable(self.runner,
                                             self.ittoc.getCDDBDiscId(),
                                             self.ittoc.getMusicBrainzDiscId(),
-                                            self.device, self.options.offset)
+                                            self.device, self.options.offset,
+                                            out_bpath, out_fpath)
 
         assert self.itable.getCDDBDiscId() == self.ittoc.getCDDBDiscId(), \
             "full table's id %s differs from toc id %s" % (
