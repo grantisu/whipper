@@ -45,11 +45,10 @@ def read_toc(device, fast_toc=False, toc_bpath=None, toc_fpath=None):
     toc = TocFile(tocfile)
     toc.parse()
     if toc_fpath is not None:
-        o_comp = os.path.abspath(toc_bpath).split(os.sep)
         t_comp = os.path.abspath(toc_fpath).split(os.sep)
         t_dirn = os.sep.join(t_comp[:-1])
         # If the output path doesn't exist, make it recursively
-        if (not os.path.isdir(t_dirn) and len(t_comp) - len(o_comp)) > 1:
+        if not os.path.isdir(t_dirn):
             os.makedirs(t_dirn)
         t_dst = truncate_filename(os.path.join(t_dirn, t_comp[-1] + '.toc'))
         shutil.copy(tocfile, os.path.join(t_dirn, t_dst))
